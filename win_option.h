@@ -18,11 +18,11 @@
 #include "setting.h"
 #include <QTextStream>
 
-class Option : public QDialog
+class Win_Option : public QDialog
 {
     Q_OBJECT
 public:
-    explicit Option(Setting *set,QDialog *parent = nullptr);
+    explicit Win_Option(Setting *set,QDialog *parent = nullptr);
 private:
     QVBoxLayout *main_layout;
     QFormLayout *set_item_layout;

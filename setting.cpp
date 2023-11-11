@@ -14,6 +14,7 @@ Setting::Setting(void)
         recent_book.clear();
         database_dir="./database";
         coding_type="UTF-8";
+        current_book=Q_NULLPTR;
 
         //bookshelf_dir="./my_bookshelf/";
         bookshelf_dir="C:/Users/lei/Desktop/读书/txt/";
@@ -25,12 +26,20 @@ Setting::Setting(void)
         read_conf();
     }
 }
-void Setting::set(QString bookshelf_dir,QString database_dir,QString coding_type,Book *current_book)
+void Setting::set(QString bookshelf_dir,QString database_dir,QString coding_type)
 {
-    this->bookshelf_dir=bookshelf_dir;
-    this->database_dir=database_dir;
-    this->coding_type=coding_type;
-    this->current_book=current_book;
+    if(bookshelf_dir.size())
+        this->bookshelf_dir=bookshelf_dir;
+    if(database_dir.size())
+        this->database_dir=database_dir;
+    if(coding_type.size())
+        this->coding_type=coding_type;
+}
+
+void Setting::set_current_book(Book *current_book)
+{
+    if(current_book!=Q_NULLPTR)
+        this->current_book=current_book;
 }
 void Setting::renew_setting_file(void)
 {

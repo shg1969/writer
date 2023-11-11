@@ -1,0 +1,95 @@
+#include "win_preview.h"
+#include "book.h"
+#include "setting.h"
+#include<QComboBox>
+#include<QTextBrowser>
+#include<QVBoxLayout>
+#include<QHBoxLayout>
+#include<QPushButton>
+#include<QSpacerItem>
+#include<QLabel>
+#include<QString>
+#include<QTextCodec>
+
+
+Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
+{
+    /****************************窗体界面****************************/
+    setWindowTitle("文字预览：选择编码方式");
+    resize(600,600);
+    QVBoxLayout *main_layout=new QVBoxLayout(this);
+
+    label_encoding=new QLabel("编码方式:",this);
+    label_book_name=new QLabel("书名:");
+
+    ComboBox_celect_coding=new QComboBox(this);
+    ComboBox_celect_coding->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    QHBoxLayout *layout_set_encoding=new QHBoxLayout(this);
+    layout_set_encoding->addWidget(label_encoding);
+    layout_set_encoding->addWidget(ComboBox_celect_coding);
+
+    browser=new QTextBrowser(this);
+
+    ok=new QPushButton("确定",this);
+    cancel=new QPushButton("取消",this);
+    QHBoxLayout *btn_layout=new QHBoxLayout(this);
+    btn_layout->addSpacing(30);
+    btn_layout->addWidget(ok);
+    ok->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    btn_layout->addSpacing(30);
+    btn_layout->addWidget(cancel);
+    cancel->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    btn_layout->addSpacing(30);
+
+    main_layout->addWidget(label_book_name);
+    main_layout->addItem(layout_set_encoding);
+    main_layout->addWidget(browser);
+    main_layout->addItem(btn_layout);
+
+    this->setLayout(main_layout);
+
+    /****************************窗口配置****************************/
+    //编码方式选择的下拉框
+    QList<QByteArray> codecs=QTextCodec::availableCodecs();
+    encoding_type=codecs[0];//默认编码方式
+    QString s;
+    for(auto i:codecs)
+    {
+        ComboBox_celect_coding->addItem(QString(i));
+    }
+
+    //窗体设置为模态显示
+    setWindowModality(Qt::ApplicationModal); //设置阻塞类型
+    setAttribute(Qt::WA_ShowModal, true);    //属性设置 true:模态 false:非模态
+
+    /****************************信号和槽****************************/
+    //按照用户的选择，更改显示的编码方式
+    connect(ComboBox_celect_coding,&QComboBox::currentTextChanged,this,&Win_Preview::encoding_Changed);
+
+    //只要按了确认，就发射关于编码类型的 “广播”
+    connect(this->ok,&QPushButton::clicked,[&](){
+        this->close();
+        emit sent_encoding_type(encoding_type);
+    });
+
+    this->hide();
+}
+
+//配置预览对象
+void Win_Preview::preview_show(QString book_name,QByteArray txt)
+{
+    label_book_name->setText("书名:"+Book::get_bookname_from_path(book_name));
+    preview_txt=txt;
+    browser->setText(QString(preview_txt));
+    this->show();
+}
+void Win_Preview::encoding_Changed(const QString &text)
+{
+    if(encoding_type==text)return;
+    encoding_type=text;//保存解码方式
+    //解码
+    codec = QTextCodec::codecForName(encoding_type.toUtf8());
+    QString string = codec->toUnicode(preview_txt);//如果本来就是UTF-8会导致程序崩溃
+    //预览
+    browser->setText(string);
+}

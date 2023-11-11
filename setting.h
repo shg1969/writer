@@ -15,7 +15,8 @@ public:
     Setting(void);
     void renew_setting_file(void);//更新配置文件
     void read_conf(void);//从配置文件读取配置信息
-    void set(QString bookshelf_dir,QString database_dir,QString coding_type,Book *current_book);
+    void set(QString bookshelf_dir,QString database_dir,QString coding_type);
+    void set_current_book(Book *current_book);
     QString get_bookshelf_dir(void){return bookshelf_dir;}
     QVector<QString> get_bookshelf(void){return bookshelf;}
     QVector<QString> get_recent_book(void){return recent_book;}

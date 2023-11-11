@@ -1,6 +1,6 @@
-#include "option.h"
+#include "win_option.h"
 #include<QFileDialog>
-Option::Option(Setting *set,QDialog *parent) : QDialog(parent)
+Win_Option::Win_Option(Setting *set,QDialog *parent) : QDialog(parent)
 {
     setWindowTitle("设置");
     resize(600,600);
@@ -53,7 +53,7 @@ Option::Option(Setting *set,QDialog *parent) : QDialog(parent)
     connect(browse_database_dir,&QPushButton::clicked,[&](){
         edit_database_dir->setText(QFileDialog::getExistingDirectory(this,"选择数据库目录"));
     });
-    connect(cancel,&QPushButton::clicked,this,&Option::close);
+    connect(cancel,&QPushButton::clicked,this,&Win_Option::close);
     connect(ok,&QPushButton::clicked,[&](){
         set->set(edit_shelf_dir->text(),edit_database_dir->text(),coding_type->currentText());
     });

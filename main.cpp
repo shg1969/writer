@@ -1,10 +1,11 @@
-#include "mainwindow.h"
+#include "win_main.h"
 #include <QApplication>
 
-#define __TEST
+//#define __TEST
 #ifdef __TEST
-#include "preview_txt.h"
-#include "bookshelf.h"
+#include "win_preview.h"
+#include "win_bookshelf.h"
+#include "win_option.h"
 #include "setting.h"
 #include "book.h"
 #include<QDebug>
@@ -12,7 +13,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    Setting *s=new Setting;
+    Win_Option option(s);
+    option.show();
     return a.exec();
 }
 #endif
@@ -21,7 +24,7 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    Win_Main w;
     w.show();
     return a.exec();
 }
