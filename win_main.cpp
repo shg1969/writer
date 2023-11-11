@@ -31,11 +31,14 @@ Win_Main::Win_Main(QWidget *parent)
     setMenuBar(menubar);
 
     auto file_menu=menubar->addMenu("文件");
+    auto win_menu=menubar->addMenu("窗口");
     auto about_menu=menubar->addMenu("关于");
 
     auto create_book=file_menu->addAction("导入书籍");
     auto open_book=file_menu->addAction("打开书籍");
     auto close_book=file_menu->addAction("关闭书籍");
+
+    auto open_read_dock=win_menu->addAction("阅读摘录");
 
     auto about_Qt=about_menu->addAction("关于Qt");
     auto about_author=about_menu->addAction("关于作者");
@@ -44,8 +47,13 @@ Win_Main::Win_Main(QWidget *parent)
     bookshelf_win=new Win_Bookshelf(Q_NULLPTR);
     preview_win=new Win_Preview(Q_NULLPTR);
     //编辑窗口
-    edit_win=new QPlainTextEdit(this);
-    setCentralWidget(edit_win);
+    edit_txt=new QPlainTextEdit(this);
+    setCentralWidget(edit_txt);
+
+    //浮动窗口
+    record_win=new Win_Read(this);
+    record_win->setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
+    record_win->hide();
     /****************************信号和槽****************************/
     //新导入书籍
     connect(create_book,&QAction::triggered,this,&Win_Main::load_new_book);
@@ -54,6 +62,15 @@ Win_Main::Win_Main(QWidget *parent)
     //新导入书籍
     connect(close_book,&QAction::triggered,this,&Win_Main::close_book);
 
+    //阅读模式下的浮动窗口
+    connect(open_read_dock,&QAction::triggered,[&](){
+        record_win->setFloating(1);
+        record_win->show();
+    });
+    connect(edit_txt,&QPlainTextEdit::selectionChanged,[&](){
+        emit txt_selection_Changed(edit_txt->textCursor().selectedText());
+    });
+    connect(this,&Win_Main::txt_selection_Changed,record_win,&Win_Read::auto_set_key_focus);
     //处理预览窗口返回的信息
     connect(preview_win,&Win_Preview::sent_encoding_type,this,&Win_Main::accept_coding_type);
     //关于Qt
