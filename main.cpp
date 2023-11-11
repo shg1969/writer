@@ -8,9 +8,7 @@
 #include "setting.h"
 #include "book.h"
 #include<QDebug>
-#endif
 
-#ifdef __TEST
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
