@@ -8,14 +8,16 @@
 #include "win_option.h"
 #include "setting.h"
 #include "book.h"
+#include "win_read.h"
 #include<QDebug>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Setting *s=new Setting;
-    Win_Option option(s);
-    option.show();
+//  Setting *s=new Setting;
+    Win_Main w;
+    Win_Read *test=new Win_Read(&w);
+    w.show();
     return a.exec();
 }
 #endif
