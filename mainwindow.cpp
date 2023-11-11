@@ -37,8 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
     auto open_book=file_menu->addAction("打开书籍");
     auto close_book=file_menu->addAction("关闭书籍");
 
-    auto about_Qt=about_menu->addAction("关于Qt");
-    auto about_author=about_menu->addAction("关于作者");
+//    auto about_Qt=about_menu->addAction("关于Qt");
+//    auto about_author=about_menu->addAction("关于作者");
 
     //编辑窗口
     QDockWidget *dock_edit=new QDockWidget("编辑窗口",this);
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /****************************窗口配置****************************/
     bookshelf_win=new Bookshelf(this);
-    preview_win=new Preview_txt(this);
+    preview_win=new Preview_txt(Q_NULLPTR);
     //编辑窗口
     QString s;
     for(auto i:setting.bookshelf)
@@ -75,17 +75,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(preview_win,&Preview_txt::sent_encoding_type,this,&MainWindow::accept_coding_type);
 
     /****************************调试内容****************************/
-#ifdef __TEST
-    connect(edit_win,&QPlainTextEdit::textChanged,[&](){
-        QByteArray s=QString("你好啊").toUtf8();
-        preview_win->preview_conf("遮天",s);
-    });
-#endif
+
 }
 
 MainWindow::~MainWindow()
 {
-
+    delete preview_win;
 }
 
 void MainWindow::load_new_book(void)

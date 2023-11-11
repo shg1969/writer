@@ -2,5 +2,5 @@
 
 Note::Note(QWidget *parent) : QWidget(parent)
 {
-123
+
 }
