@@ -41,6 +41,7 @@ private:
     int chapter_num;//章节数
     QVector<QString> contents;//目录列表
     QHash<QString,QString> chapter;//书的章节，以目录名为索引，以正文为内容
+    QString description;
 //    int word_num;//书的字数
 //    int history_pos;//阅读位置记录
 };
