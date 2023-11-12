@@ -6,10 +6,15 @@ Win_Bookshelf::Win_Bookshelf(QWidget *parent) : QWidget(parent)
 {
     /****************************窗体界面****************************/
     resize(300,400);
-    main_layout=new QVBoxLayout(this);
+    main_layout=new QVBoxLayout;
     setLayout(main_layout);
 
     this->hide();
+}
+
+Win_Bookshelf::~Win_Bookshelf()
+{
+    delete main_layout;
 }
 void Win_Bookshelf::choose_book_on_shelf(Setting *set)
 {
