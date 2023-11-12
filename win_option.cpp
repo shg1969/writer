@@ -4,7 +4,7 @@ Win_Option::Win_Option(Setting *set,QDialog *parent) : QDialog(parent)
 {
     setWindowTitle("设置");
     resize(600,600);
-    main_layout=new QVBoxLayout(this);
+    main_layout=new QVBoxLayout;
     set_item_layout=new QFormLayout(this);
     btn_layout=new QHBoxLayout(this);
     H_layout_1=new QHBoxLayout(this);
@@ -57,4 +57,9 @@ Win_Option::Win_Option(Setting *set,QDialog *parent) : QDialog(parent)
     connect(ok,&QPushButton::clicked,[&](){
         set->set(edit_shelf_dir->text(),edit_database_dir->text(),coding_type->currentText());
     });
+}
+
+Win_Option::~Win_Option()
+{
+    delete main_layout;
 }
