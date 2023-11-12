@@ -23,6 +23,7 @@ class Win_Read : public QDockWidget
     Q_OBJECT
 public:
     explicit Win_Read(QWidget *parent = nullptr);
+    ~Win_Read();
 public slots:
     void auto_set_key_focus(QString content);
 private:
