@@ -14,6 +14,7 @@ class Win_Bookshelf : public QWidget
     Q_OBJECT
 public:
     explicit Win_Bookshelf(QWidget *parent = nullptr);
+    ~Win_Bookshelf(void);
     void add_book(Book*book);
     void delete_books(void);
     void renew_bookshelf(void);
