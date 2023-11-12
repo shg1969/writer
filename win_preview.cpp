@@ -17,14 +17,14 @@ Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
     /****************************窗体界面****************************/
     setWindowTitle("文字预览：选择编码方式");
     resize(600,600);
-    QVBoxLayout *main_layout=new QVBoxLayout(this);
+    main_layout=new QVBoxLayout;
 
     label_encoding=new QLabel("编码方式:",this);
     label_book_name=new QLabel("书名:");
 
     ComboBox_celect_coding=new QComboBox(this);
     ComboBox_celect_coding->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    QHBoxLayout *layout_set_encoding=new QHBoxLayout(this);
+    layout_set_encoding=new QHBoxLayout();
     layout_set_encoding->addWidget(label_encoding);
     layout_set_encoding->addWidget(ComboBox_celect_coding);
 
@@ -32,7 +32,7 @@ Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
 
     ok=new QPushButton("确定",this);
     cancel=new QPushButton("取消",this);
-    QHBoxLayout *btn_layout=new QHBoxLayout(this);
+    btn_layout=new QHBoxLayout();
     btn_layout->addSpacing(30);
     btn_layout->addWidget(ok);
     ok->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
@@ -74,7 +74,13 @@ Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
 
     this->hide();
 }
-
+Win_Preview::~Win_Preview()
+{
+    delete main_layout;
+    delete btn_layout;
+    delete layout_set_encoding;
+    delete layout_set_encoding;
+}
 //配置预览对象
 void Win_Preview::preview_show(QString book_name,QByteArray txt)
 {
