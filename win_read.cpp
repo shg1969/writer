@@ -4,10 +4,11 @@ Win_Read::Win_Read(QWidget *parent) : QDockWidget(parent)
 {
     setWindowTitle("语段摘录");
     this->setWindowFlags(Qt::FramelessWindowHint);
+    //由于基类是QDockWidget，要容纳多个部件，就要增加一个容器类容纳部件
     all=new QGroupBox(this);
-    layout_key=new QHBoxLayout(this);
-    layout_recent=new QHBoxLayout(this);
-    layout_main=new QVBoxLayout(this);
+    layout_key=new QHBoxLayout();
+    layout_recent=new QHBoxLayout();
+    layout_main=new QVBoxLayout;
 
     checkBox_auto_focus=new QCheckBox(" 选中文本后自动聚焦",this);
     label_key=new QLabel("关键字:",this);
@@ -50,7 +51,12 @@ Win_Read::Win_Read(QWidget *parent) : QDockWidget(parent)
     connect(listView_recent_added,&QListWidget::itemClicked,this,&Win_Read::show_select_item);
     //**************数据**********
 }
-
+Win_Read::~Win_Read()
+{
+    delete layout_main;
+    delete layout_key;
+    delete layout_recent;
+}
 void Win_Read::auto_set_key_focus(QString content)
 {
     if(checkBox_auto_focus->isChecked())
