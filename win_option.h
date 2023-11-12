@@ -23,6 +23,7 @@ class Win_Option : public QDialog
     Q_OBJECT
 public:
     explicit Win_Option(Setting *set,QDialog *parent = nullptr);
+    ~Win_Option(void);
 private:
     QVBoxLayout *main_layout;
     QFormLayout *set_item_layout;
