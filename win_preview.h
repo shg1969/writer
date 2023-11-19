@@ -1,24 +1,26 @@
 #ifndef PREVIEW_TXT_H
 #define PREVIEW_TXT_H
 
-#include <QWidget>
+#include <QDialog>
 #include<QComboBox>
 #include<QTextBrowser>
 #include<QTextCodec>
 #include<QPushButton>
 #include<QByteArray>
-#include "book.h"
 #include<QList>
 #include<QLabel>
 #include<QHBoxLayout>
-class Win_Preview : public QWidget
+class Win_Preview : public QDialog
 {
     Q_OBJECT
 public:
     //提供预览窗口
-    explicit Win_Preview(QWidget *parent);
-    void preview_show(QString book_name,QByteArray txt);
+    explicit Win_Preview(QWidget *parent=nullptr);
+    void show_win(QString txt);
     ~Win_Preview();
+    QString get_encoding_type() const;
+    void set_showing_book_name(QString name);
+
 signals:
     void sent_encoding_type(QString new_coding);
 private:
@@ -33,7 +35,7 @@ private:
     QHBoxLayout *btn_layout;
 
     QString encoding_type;//编码方式名称
-    QByteArray preview_txt;//预览文段
+    QString preview_txt;//预览文段
     QTextCodec *codec;//文字编码转换
 private slots:
     void encoding_Changed(const QString &text);

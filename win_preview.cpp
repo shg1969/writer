@@ -1,6 +1,6 @@
 #include "win_preview.h"
 #include "book.h"
-#include "setting.h"
+//#include "setting.h"
 #include<QComboBox>
 #include<QTextBrowser>
 #include<QVBoxLayout>
@@ -12,7 +12,7 @@
 #include<QTextCodec>
 
 
-Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
+Win_Preview::Win_Preview(QWidget *parent) : QDialog(parent)
 {
     /****************************窗体界面****************************/
     setWindowTitle("文字预览：选择编码方式");
@@ -50,7 +50,7 @@ Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
 
     /****************************窗口配置****************************/
     //编码方式选择的下拉框
-    QList<QByteArray> codecs=QTextCodec::availableCodecs();
+    QList<QByteArray> codecs{"UTF-8","UTF-16","UTF-32","GB18030","GB2312","GBK","Big5"};
     encoding_type=codecs[0];//默认编码方式
     QString s;
     for(auto i:codecs)
@@ -65,7 +65,7 @@ Win_Preview::Win_Preview(QWidget *parent) : QWidget(parent)
     /****************************信号和槽****************************/
     //按照用户的选择，更改显示的编码方式
     connect(ComboBox_celect_coding,&QComboBox::currentTextChanged,this,&Win_Preview::encoding_Changed);
-
+    connect(cancel,&QPushButton::clicked,this,&Win_Preview::hide);
     //只要按了确认，就发射关于编码类型的 “广播”
     connect(this->ok,&QPushButton::clicked,[&](){
         this->close();
@@ -81,21 +81,35 @@ Win_Preview::~Win_Preview()
     delete layout_set_encoding;
     delete layout_set_encoding;
 }
-//配置预览对象
-void Win_Preview::preview_show(QString book_name,QByteArray txt)
+
+QString Win_Preview::get_encoding_type() const
 {
-    label_book_name->setText("书名:"+Book::get_bookname_from_path(book_name));
-    preview_txt=txt;
-    browser->setText(QString(preview_txt));
+    return encoding_type;
+}
+
+void Win_Preview::set_showing_book_name(QString name)
+{
+    label_book_name->setText("书名："+name);
+}
+
+//配置预览对象
+void Win_Preview::show_win(QString txt)
+{
+    preview_txt.clear();
+    //取前1024*8字节来预览
+    auto length=1024*8<txt.length()?1024*8:txt.length();
+    preview_txt=txt.left(length);
+    browser->setText(preview_txt);
     this->show();
 }
-void Win_Preview::encoding_Changed(const QString &text)
+
+void Win_Preview::encoding_Changed(const QString &encoding)
 {
-    if(encoding_type==text)return;
-    encoding_type=text;//保存解码方式
+    if(encoding_type==encoding)return;
+    encoding_type=encoding;
     //解码
-    codec = QTextCodec::codecForName(encoding_type.toUtf8());
-    QString string = codec->toUnicode(preview_txt);//如果本来就是UTF-8会导致程序崩溃
+    codec = QTextCodec::codecForName(encoding.toUtf8());
+    QString string = codec->toUnicode(preview_txt.toUtf8());//如果本来就是UTF-8会导致程序崩溃
     //预览
     browser->setText(string);
 }

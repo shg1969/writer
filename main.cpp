@@ -6,17 +6,18 @@
 #include "win_preview.h"
 #include "win_bookshelf.h"
 #include "win_option.h"
-#include "setting.h"
+//#include "setting.h"
 #include "book.h"
 #include "win_read.h"
+#include "win_directory.h"
 #include<QDebug>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 //  Setting *s=new Setting;
-    Win_Main w;
-    Win_Read *test=new Win_Read(&w);
+    Book *book=new Book;
+    Win_Directory w(book);
     w.show();
     return a.exec();
 }

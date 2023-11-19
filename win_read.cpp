@@ -9,6 +9,7 @@ Win_Read::Win_Read(QWidget *parent) : QDockWidget(parent)
     layout_key=new QHBoxLayout();
     layout_recent=new QHBoxLayout();
     layout_main=new QVBoxLayout;
+    layout_main->setMargin(1);
 
     checkBox_auto_focus=new QCheckBox(" 选中文本后自动聚焦",this);
     label_key=new QLabel("关键字:",this);

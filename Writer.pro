@@ -18,25 +18,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     book.cpp \
     main.cpp \
-    note.cpp \
-    setting.cpp \
-    win_bookshelf.cpp \
+    win_directory.cpp \
+    win_edit.cpp \
     win_main.cpp \
-    win_option.cpp \
     win_preview.cpp \
-    win_read.cpp \
-    win_write.cpp
+    win_read.cpp
 
 HEADERS += \
     book.h \
-    note.h \
-    setting.h \
-    win_bookshelf.h \
+    win_directory.h \
+    win_edit.h \
     win_main.h \
-    win_option.h \
     win_preview.h \
-    win_read.h \
-    win_write.h
+    win_read.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
